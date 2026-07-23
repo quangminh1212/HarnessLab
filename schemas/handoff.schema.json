@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/quangminh1212/HarnessLab/schemas/handoff.schema.json",
+  "title": "HarnessLab multi-agent handoff",
+  "type": "object",
+  "required": ["from_role", "to_role", "intent", "payload", "acceptance"],
+  "properties": {
+    "from_role": { "type": "string", "minLength": 1 },
+    "to_role": { "type": "string", "minLength": 1 },
+    "intent": { "type": "string", "minLength": 1 },
+    "payload": { "type": "object" },
+    "acceptance": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "accepted", "rejected"]
+    }
+  },
+  "additionalProperties": true
+}

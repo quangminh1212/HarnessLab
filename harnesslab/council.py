@@ -62,6 +62,7 @@ class Turn:
 class CouncilState:
     name: str
     topic: str
+    profile: str = "github"
     github: dict[str, Any] = field(default_factory=dict)
     max_rounds: int = 2
     current_round: int = 1
@@ -103,6 +104,7 @@ class CouncilState:
         return {
             "name": self.name,
             "topic": self.topic,
+            "profile": self.profile,
             "github": self.github,
             "max_rounds": self.max_rounds,
             "current_round": self.current_round,
@@ -119,6 +121,7 @@ class CouncilState:
         return cls(
             name=str(data.get("name") or "council"),
             topic=str(data.get("topic") or ""),
+            profile=str(data.get("profile") or "github"),
             github=dict(data.get("github") or {}),
             max_rounds=int(data.get("max_rounds") or 2),
             current_round=int(data.get("current_round") or 1),
@@ -174,14 +177,25 @@ def init_council(
     *,
     max_rounds: int = 2,
     github: dict[str, Any] | None = None,
+    profile: str = "github",
+    mad_prompts: dict[str, str] | None = None,
 ) -> tuple[CouncilState, list[Path]]:
+    from harnesslab.profiles import get_profile, roles_for
+
+    prof = get_profile(profile)
+    roles = roles_for(profile)
+    if max_rounds is None or max_rounds <= 0:
+        max_rounds = int(prof.get("max_rounds_default") or 2)
+
     d = council_dir(root, name)
     d.mkdir(parents=True, exist_ok=True)
     state = CouncilState(
         name=name,
         topic=topic,
+        profile=profile,
         max_rounds=max_rounds,
         github=github or {},
+        roles=roles,
     )
     sp = state_path(root, name)
     save_state(state, sp)
@@ -189,8 +203,22 @@ def init_council(
 
     ctx = d / "CONTEXT.md"
     gh = state.github
+    mad_block = ""
+    if mad_prompts:
+        mad_block = (
+            "\n## MAD prompts (from Multi-Agents-Debate config4all.json)\n"
+            f"- player_meta: {mad_prompts.get('player_meta_prompt', '')[:300]}\n"
+            f"- affirmative: {mad_prompts.get('affirmative_prompt', '')[:200]}\n"
+            f"- negative: {mad_prompts.get('negative_prompt', '')[:200]}\n"
+        )
     ctx.write_text(
         f"""# Council context — {name}
+
+## Profile
+- id: {profile}
+- title: {prof.get('title')}
+- source: {prof.get('source')}
+- turn_format: {prof.get('turn_format')}
 
 ## Topic
 {topic}
@@ -204,7 +232,7 @@ def init_council(
 
 ## Body
 {gh.get("body") or "(no body pulled — run harnesslab github pull)"}
-
+{mad_block}
 ## Roles
 """
         + "\n".join(f"- **{r['id']}** ({r['stance']}): {r['brief']}" for r in state.roles)
@@ -280,8 +308,8 @@ URL: {gh.get('url', '')}
 
 ## Rules
 - Stay in role; do not impersonate other roles.
-- Cite concrete evidence from CONTEXT.md / GitHub body.
-- End with: CLAIM: ... | EVIDENCE: ... | ASK: ...
+- Cite concrete evidence from CONTEXT.md / GitHub body / MAD prompts.
+- End with structured tags for this profile (see CONTEXT.md turn_format).
 
 When done, record via:
   harnesslab council turn {state.name} --role {role['id']} --file turn.md
@@ -292,6 +320,7 @@ def status_text(state: CouncilState) -> str:
     role = state.next_role()
     lines = [
         f"council: {state.name}",
+        f"  profile: {getattr(state, 'profile', 'github')}",
         f"  status: {state.status}",
         f"  topic: {state.topic}",
         f"  round: {state.current_round}/{state.max_rounds}",

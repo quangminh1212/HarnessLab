@@ -6,7 +6,7 @@ description: >
 compatibility: terminal; gh recommended
 metadata:
   author: HarnessLab
-  version: "0.2.0"
+  version: "0.3.0"
   hermes:
     tags: [multi-agent, debate, github, harness, ci-cd]
     category: development

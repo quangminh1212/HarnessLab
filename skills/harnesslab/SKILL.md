@@ -1,65 +1,71 @@
 ---
 name: harnesslab
 description: >
-  HarnessLab multi-AI council on GitHub: many agents debate one issue/PR
-  (proposer/critic/verifier/synthesizer), durable TRANSCRIPT + DECISION.
-  Activate with /harnesslab. Use when user wants multiple AIs to discuss,
-  review, or argue about a GitHub issue, PR, or design decision.
-compatibility: Requires terminal; gh CLI recommended for GitHub pull
+  HarnessLab unifies 3 upstream labs: Multi-Agents-Debate (MAD),
+  awesome-harness-engineering (AHE templates/loop), loop-engineering
+  (GitHub multi-agent patterns). Council profiles mad|github|harness.
+  Activate with /harnesslab.
+compatibility: terminal; gh recommended; submodules under labs/
 metadata:
   author: HarnessLab
-  version: "0.2.0"
+  version: "0.3.0"
   hermes:
-    tags: [multi-agent, debate, council, github, harness, review]
+    tags: [multi-agent, debate, harness, github, mad, loop-engineering]
     category: development
     requires_toolsets: [terminal]
 ---
 
-# HarnessLab — multi-AI GitHub council
+# HarnessLab — 3 labs in one
 
-You run an **agent harness**: roles + durable state + GitHub context + verify/closeout.
-Goal: **nhiều AI bàn luận** trên một issue/PR rồi chốt quyết định có bằng chứng.
+SoT: `C:\Dev\HarnessLab` with **git submodules**:
 
-SoT: `C:\Dev\HarnessLab` (junction only — no hermes-agent patches).
+| Pillar | Path |
+|--------|------|
+| MAD debate | `labs/Multi-Agents-Debate` (GPL-3) |
+| Harness engineering | `labs/awesome-harness-engineering` (CC0) |
+| GitHub multi-agent loops | `labs/loop-engineering` (MIT) |
 
 ```powershell
-python -m harnesslab attach
-python -m harnesslab council init <name> --ref owner/repo#n --topic "..."
-python -m harnesslab council next <name>
-python -m harnesslab council turn <name> --role <id> --file turn.md
-python -m harnesslab council decide <name>
+git submodule update --init --recursive
+python -m harnesslab vendors
+python -m harnesslab smoke
 ```
 
-## Roles (default)
+## When user asks for multi-AI debate
 
-| id | Job |
-|----|-----|
-| `proposer` | Affirmative: propose solution with evidence |
-| `critic` | Negative: attack gaps, security, tests, scope |
-| `verifier` | Judge: score evidence; block weak claims |
-| `synthesizer` | Closeout: write DECISION.md + optional `gh` comment recipe |
+```powershell
+python -m harnesslab mad init <id> --topic "..."
+# or: council init <id> --profile mad --topic "..."
+python -m harnesslab council next <id>
+python -m harnesslab council turn <id> --role devil --content "..."
+```
 
-Inspired by **MAD** (Multi-Agent Debate): truth from clash of ideas; avoid single-agent “degeneration of thoughts”.
+Roles MAD: **devil → angel → judge** (upstream Affirmative/Negative/Moderator).
 
-## Workflow (autonomous after user gives topic/ref)
+Optional live OpenAI: `python labs/Multi-Agents-Debate/interactive.py` (needs API key).
 
-1. **Init** council under project (or `C:\Dev\HarnessLab\runs\...`).
-2. **Pull** GitHub context if `--ref` given (`gh issue/pr view`).
-3. For each round × role (except skip synthesizer until end of last round):
-   - `council next` → fill turn as that role only
-   - End every turn with: `CLAIM: … | EVIDENCE: … | ASK: …`
-   - `council turn --role … --content/file …`
-4. **Decide** → refresh DECISION.md; offer `gh issue comment` / `gh pr comment`.
-5. Do **not** merge/close GitHub items unless user explicitly asks.
+## When user asks for harness scaffold / long loop
 
-## Hard rules
+```powershell
+python -m harnesslab ahe templates templates/ahe
+python -m harnesslab scaffold .
+python -m harnesslab loop init <id> --goal "..."
+python -m harnesslab score .
+```
 
-- One turn = one role. Never write as two roles in one message.
-- Cite GitHub body / files / comments; no invented CI results.
-- Prefer durable files (`CONTEXT.md`, `TRANSCRIPT.md`, `DECISION.md`) over chat-only memory.
-- If blocked >1 step, re-read CONTEXT + last 3 turns, then continue.
-- Relation: **CrewLab** = ship with one-task-per-agent meetings; **LoopLab** = single OPAV loop; **HarnessLab** = multi-voice debate on a GitHub artifact.
+## When user asks for GitHub multi-agent review
 
-## Secondary (optional)
+```powershell
+python -m harnesslab loop-eng list
+python -m harnesslab loop-eng copy pr-babysitter
+python -m harnesslab github pull --ref owner/repo#n
+python -m harnesslab council init r1 --profile github --ref owner/repo#n
+python -m harnesslab handoff validate handoffs/x.yaml
+```
 
-Harness Open Source Docker CI (`python -m harnesslab recipe docker-run`) — only if user asks for self-hosted Harness UI, not the default path.
+## Rules
+
+- Prefer durable files under `councils/` `loops/` `handoffs/`
+- One turn = one role
+- Respect MAD GPL: do not relicense upstream MAD sources as MIT
+- Do not merge/close GitHub items unless user asks

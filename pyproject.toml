@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "harnesslab"
-version = "0.2.0"
-description = "HarnessLab — multi-AI council harness on GitHub (agent harness engineering for Hermes)"
+version = "0.3.0"
+description = "HarnessLab — MAD + awesome-harness-engineering + loop-engineering unified for Hermes"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }

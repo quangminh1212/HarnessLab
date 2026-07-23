@@ -18,8 +18,8 @@ def run(*args: str) -> subprocess.CompletedProcess[str]:
 def test_smoke():
     p = run("smoke")
     assert p.returncode == 0, p.stdout + p.stderr
-    assert "[OK] skill harnesslab" in p.stdout
-    assert "[OK] council" in p.stdout
+    assert "[OK] vendor mad" in p.stdout
+    assert "[OK] council profile mad" in p.stdout
 
 
 def test_recipe_docker():

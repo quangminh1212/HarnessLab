@@ -17,8 +17,15 @@ venv/
 # Local runs / generated
 runs/
 councils/
+loops/
+handoffs/
 harness/
 .data/
+templates/ahe/
+# node installs inside submodules (if built locally)
+labs/**/node_modules/
+labs/**/package-lock.json
+!labs/loop-engineering/**/package-lock.json
 
 # IDE / OS
 .idea/
