@@ -1,20 +1,19 @@
-# HarnessLab context (external module)
+# HarnessLab context
 
 SoT: `C:\Dev\HarnessLab`  
-Skills attached as junctions under Hermes home `skills/harnesslab` and `skills/harness-integration`.
+Skills: `skills/harnesslab`, `skills/harness-integration` (junctions).
 
-## When to use
+## Primary
 
-- Local **Harness Open Source** (Docker UI on :3000)
-- CI/CD recipes for XLab / agent repos
-- Gitspaces / artifact registry exploration (after local stack is up)
-
-## Commands
+Multi-AI **council** on GitHub issues/PRs:
 
 ```text
-python -m harnesslab doctor
-python -m harnesslab recipe docker-run
-python -m harnesslab attach|detach
+harnesslab council init|next|turn|decide
+harnesslab github pull --ref owner/repo#n
 ```
 
-Do **not** vendor Harness monorepo into hermes-agent. Keep clone at `C:\Dev\harness` if needed.
+Roles: proposer → critic → verifier → synthesizer → DECISION.md
+
+## Secondary
+
+Optional Harness Open Source Docker: `harnesslab recipe docker-run`

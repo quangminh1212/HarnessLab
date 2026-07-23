@@ -1,33 +1,30 @@
 ---
 name: harness-integration
 description: >
-  Alias of HarnessLab (Harness Open Source: clone, Docker local, CI recipes).
-  Prefer /harnesslab. Kept for back-compat with older Hermes skill name.
-compatibility: Docker Desktop recommended; git optional
+  Alias of HarnessLab: multi-AI GitHub council + optional Harness OSS Docker.
+  Prefer /harnesslab.
+compatibility: terminal; gh recommended
 metadata:
   author: HarnessLab
-  version: "0.1.0"
+  version: "0.2.0"
   hermes:
-    tags: [ci-cd, harness, docker, devops]
+    tags: [multi-agent, debate, github, harness, ci-cd]
     category: development
     requires_toolsets: [terminal]
 ---
 
-# Harness Integration (alias → HarnessLab)
+# harness-integration (alias → HarnessLab)
 
-This skill is the **back-compat name** for **HarnessLab**.
+Primary skill: **`/harnesslab`**.
 
-SoT: `C:\Dev\HarnessLab`  
-Primary skill: `/harnesslab` (`skills/harnesslab`).
-
-## Quick actions
+Multi-AI debate on GitHub:
 
 ```powershell
 cd C:\Dev\HarnessLab
-python -m harnesslab doctor
-python -m harnesslab recipe docker-run
+python -m harnesslab council init my-debate --ref owner/repo#12 --topic "Review approach"
+python -m harnesslab council next my-debate
 ```
 
-Local UI after docker-run: **http://localhost:3000**
+Optional Harness OSS local UI: `python -m harnesslab recipe docker-run` → http://localhost:3000
 
-Follow the full workflow and rules in the **harnesslab** skill content when both are loaded.
+Follow full rules in the **harnesslab** skill.

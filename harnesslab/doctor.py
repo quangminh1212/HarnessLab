@@ -42,31 +42,42 @@ def run_doctor() -> DoctorReport:
     lines: list[str] = []
     ok = True
 
-    docker = _which("docker")
-    if docker:
-        lines.append(f"+ docker: {docker}")
-        d_ok, d_msg = _run_ok(["docker", "version", "--format", "{{.Server.Version}}"])
-        if d_ok:
-            lines.append(f"+ docker engine: {d_msg}")
-        else:
-            lines.append(f"! docker engine not ready: {d_msg}")
-            ok = False
-    else:
-        lines.append("! docker: not on PATH (install Docker Desktop for local Harness)")
-        ok = False
-
+    # Primary: multi-AI GitHub council needs git + gh
     git = _which("git")
     lines.append(f"+ git: {git}" if git else "! git: not on PATH")
     if not git:
         ok = False
 
+    gh = _which("gh")
+    if gh:
+        lines.append(f"+ gh: {gh}")
+        g_ok, g_msg = _run_ok(["gh", "auth", "status"])
+        if g_ok:
+            lines.append("+ gh auth: ok")
+        else:
+            lines.append(f"! gh auth: {g_msg[:120]}")
+            # still usable offline for parse/scaffold
+    else:
+        lines.append("! gh: not on PATH (needed to pull issues/PRs)")
+        ok = False
+
+    # Secondary: Harness OSS Docker stack (optional)
+    docker = _which("docker")
+    if docker:
+        lines.append(f"+ docker: {docker} (optional CI stack)")
+        d_ok, d_msg = _run_ok(["docker", "version", "--format", "{{.Server.Version}}"])
+        if d_ok:
+            lines.append(f"+ docker engine: {d_msg}")
+        else:
+            lines.append(f"- docker engine not ready: {d_msg}")
+    else:
+        lines.append("- docker: not on PATH (optional for Harness OSS UI)")
+
     clone = default_clone_path()
     if clone.is_dir() and (clone / ".git").exists():
-        lines.append(f"+ clone: {clone}")
+        lines.append(f"+ harness OSS clone: {clone}")
     else:
-        lines.append(f"- clone missing (optional): {clone}")
+        lines.append(f"- harness OSS clone optional: {clone}")
 
-    for port in (3000, 3022):
-        lines.append(f"- UI/port note: Harness default binds {port} when using docker-run recipe")
-
+    lines.append("- primary mode: multi-AI council on GitHub (harnesslab council …)")
     return DoctorReport(ok=ok, lines=lines)

@@ -16,6 +16,7 @@ venv/
 
 # Local runs / generated
 runs/
+councils/
 harness/
 .data/
 

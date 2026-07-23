@@ -63,6 +63,7 @@ if (Test-Path $ctxSrc) {
 
 Write-Host ""
 Write-Host "OK. HarnessLab attached (junction only)." -ForegroundColor Green
-Write-Host "In Hermes chat: /harnesslab  or  /harness-integration"
+Write-Host "In Hermes chat: /harnesslab  (multi-AI GitHub council)"
 Write-Host "Detach: powershell -File $Root\scripts\uninstall.ps1"
 Write-Host "CLI:    cd $Root; python -m pip install -e .; python -m harnesslab smoke"
+Write-Host "Council: python -m harnesslab council init demo --ref owner/repo#1 --topic '...'"

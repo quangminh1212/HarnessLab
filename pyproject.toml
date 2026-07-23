@@ -4,14 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "harnesslab"
-version = "0.1.0"
-description = "HarnessLab — Hermes-native Harness Open Source lab (local Docker, CI recipe, attach via junction)"
+version = "0.2.0"
+description = "HarnessLab — multi-AI council harness on GitHub (agent harness engineering for Hermes)"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "HarnessLab" }]
-dependencies = []
-keywords = ["hermes", "harness", "ci-cd", "docker", "ai-agents"]
+dependencies = [
+  "PyYAML>=6.0",
+]
+keywords = ["hermes", "harness", "multi-agent", "debate", "github", "ai-agents"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Environment :: Console",
