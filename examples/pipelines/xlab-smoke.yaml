@@ -1,0 +1,10 @@
+# Example Harness-style pipeline scaffold (HarnessLab)
+pipeline:
+  name: xlab-smoke
+  stages:
+    - name: test
+      steps:
+        - name: unit
+          type: run
+          command: |
+            python -m pytest -q

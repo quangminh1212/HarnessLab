@@ -1,0 +1,165 @@
+"""Attach/detach HarnessLab to Hermes Agent without modifying hermes-agent source."""
+
+from __future__ import annotations
+
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+HERMES_ARTIFACT_RELPATHS: tuple[str, ...] = (
+    "skills/harnesslab",
+    "skills/harness-integration",
+    "harnesslab-HERMES.md",
+)
+
+# Skill names we may replace even if they were plain directories (stock Hermes copy).
+REPLACEABLE_SKILL_NAMES = frozenset({"harnesslab", "harness-integration"})
+
+
+def repo_root() -> Path:
+    return Path(__file__).resolve().parent.parent
+
+
+def default_hermes_home() -> Path:
+    env = os.environ.get("HERMES_HOME")
+    if env:
+        return Path(env)
+    local = os.environ.get("LOCALAPPDATA")
+    candidates = [
+        Path.home() / ".hermes",
+        Path(os.environ.get("USERPROFILE", str(Path.home()))) / ".hermes",
+    ]
+    if local:
+        candidates.insert(0, Path(local) / "hermes")
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return Path(local) / "hermes" if local else Path.home() / ".hermes"
+
+
+def skill_packages(root: Path | None = None) -> list[Path]:
+    skills = (root or repo_root()) / "skills"
+    if not skills.is_dir():
+        return []
+    out: list[Path] = []
+    for d in sorted(skills.iterdir()):
+        if d.is_dir() and (d / "SKILL.md").is_file():
+            out.append(d)
+    return out
+
+
+def _is_link_or_junction(path: Path) -> bool:
+    if path.is_symlink():
+        return True
+    if sys.platform != "win32":
+        return False
+    try:
+        import ctypes
+
+        GetFileAttributesW = ctypes.windll.kernel32.GetFileAttributesW  # type: ignore[attr-defined]
+        GetFileAttributesW.argtypes = [ctypes.c_wchar_p]
+        GetFileAttributesW.restype = ctypes.c_uint32
+        INVALID = 0xFFFFFFFF
+        attrs = GetFileAttributesW(str(path))
+        if attrs == INVALID:
+            return False
+        return bool(attrs & 0x400)
+    except Exception:
+        return False
+
+
+def _rm_link(path: Path) -> None:
+    if not path.exists() and not path.is_symlink():
+        return
+    if sys.platform == "win32" and (path.is_dir() or _is_link_or_junction(path)):
+        subprocess.run(["cmd", "/c", "rmdir", str(path)], check=False, capture_output=True)
+        if path.exists() and path.is_symlink():
+            path.unlink(missing_ok=True)
+        return
+    if path.is_symlink() or path.is_file():
+        path.unlink(missing_ok=True)
+        return
+    if path.is_dir():
+        shutil.rmtree(path, ignore_errors=True)
+
+
+def ensure_link(dst: Path, src: Path, *, replace_plain: bool = False) -> Path:
+    """Junction on Windows, symlink elsewhere. Re-points if already a link."""
+    src_r = src.resolve()
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    if dst.exists() or dst.is_symlink() or _is_link_or_junction(dst):
+        if _is_link_or_junction(dst) or dst.is_symlink():
+            _rm_link(dst)
+        elif replace_plain or dst.name in REPLACEABLE_SKILL_NAMES:
+            if dst.is_dir():
+                shutil.rmtree(dst)
+            else:
+                dst.unlink(missing_ok=True)
+        else:
+            raise FileExistsError(
+                f"Path exists and is not a junction: {dst} — remove manually or detach first"
+            )
+    if sys.platform == "win32":
+        r = subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(dst), str(src_r)],
+            capture_output=True,
+            text=True,
+        )
+        if r.returncode != 0 or not (dst.exists() or _is_link_or_junction(dst)):
+            raise RuntimeError(f"mklink failed: {r.stdout}\n{r.stderr}")
+    else:
+        os.symlink(src_r, dst, target_is_directory=True)
+    return dst
+
+
+def attach_to_hermes(hermes_home: Path | None = None) -> list[Path]:
+    home = hermes_home or default_hermes_home()
+    if not home.exists():
+        raise FileNotFoundError(f"Hermes home not found: {home}")
+    packages = skill_packages()
+    if not packages:
+        raise FileNotFoundError(f"no skill packages under {repo_root() / 'skills'}")
+
+    linked: list[Path] = []
+    skills_root = home / "skills"
+    skills_root.mkdir(parents=True, exist_ok=True)
+    for pkg in packages:
+        dst = skills_root / pkg.name
+        ensure_link(dst, pkg, replace_plain=True)
+        linked.append(dst)
+
+    ctx = repo_root() / "templates" / "HERMES.md"
+    if ctx.is_file():
+        marker = home / "harnesslab-HERMES.md"
+        shutil.copy2(ctx, marker)
+        linked.append(marker)
+
+    return linked
+
+
+def uninstall_from_hermes(hermes_home: Path | None = None) -> list[Path]:
+    home = hermes_home or default_hermes_home()
+    removed: list[Path] = []
+
+    names = {p.name for p in skill_packages()}
+    names.update(REPLACEABLE_SKILL_NAMES)
+    for name in sorted(names):
+        path = home / "skills" / name
+        if path.exists() or path.is_symlink() or _is_link_or_junction(path):
+            _rm_link(path)
+            if path.exists() and path.is_dir() and not _is_link_or_junction(path):
+                # plain dir leftover
+                shutil.rmtree(path, ignore_errors=True)
+            removed.append(path)
+
+    for rel in HERMES_ARTIFACT_RELPATHS:
+        if rel.startswith("skills/"):
+            continue
+        path = home / rel
+        if path.is_file() or path.is_symlink():
+            path.unlink(missing_ok=True)
+            removed.append(path)
+
+    return removed
