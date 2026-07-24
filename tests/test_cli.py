@@ -59,6 +59,17 @@ def test_council_cli(tmp_path: Path):
     p4 = run("council", "status", "cli-demo", "--root", str(tmp_path))
     assert p4.returncode == 0
     assert "turns:" in p4.stdout
+    p5 = run("council", "list", "--root", str(tmp_path))
+    assert p5.returncode == 0, p5.stdout + p5.stderr
+    assert "cli-demo" in p5.stdout
+
+
+def test_loop_list(tmp_path: Path):
+    p = run("loop", "init", "l1", "--goal", "ship", "--root", str(tmp_path))
+    assert p.returncode == 0, p.stdout + p.stderr
+    p2 = run("loop", "list", "--root", str(tmp_path))
+    assert p2.returncode == 0, p2.stdout + p2.stderr
+    assert "l1" in p2.stdout
 
 
 def test_init_pipeline(tmp_path: Path):

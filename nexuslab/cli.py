@@ -273,6 +273,31 @@ def _cmd_council_status(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_council_list(args: argparse.Namespace) -> int:
+    """List council workspaces under root/councils/."""
+    root = Path(args.root)
+    base = root / "councils"
+    if not base.is_dir():
+        print(f"councils: (none under {base})")
+        return 0
+    found = 0
+    for d in sorted(p for p in base.iterdir() if p.is_dir()):
+        sp = d / "council.yaml"
+        if not sp.is_file():
+            sp = d / "council.json"
+        if not sp.is_file():
+            continue
+        found += 1
+        try:
+            st = load_state(sp)
+            print(f"  {d.name:20} profile={st.profile} status={st.status} topic={st.topic[:60]}")
+        except Exception as e:
+            print(f"  {d.name:20} (unreadable: {e})")
+    if not found:
+        print(f"councils: (none under {base})")
+    return 0
+
+
 def _cmd_council_next(args: argparse.Namespace) -> int:
     p = state_path(Path(args.root), args.name)
     path = p if p.is_file() else p.with_suffix(".json")
@@ -344,6 +369,29 @@ def _cmd_loop_status(args: argparse.Namespace) -> int:
         print(f"error: no loop {args.name}", file=sys.stderr)
         return 1
     print(load_loop(sp).panel())
+    return 0
+
+
+def _cmd_loop_list(args: argparse.Namespace) -> int:
+    """List OPAV loops under root/loops/."""
+    root = Path(args.root)
+    base = root / "loops"
+    if not base.is_dir():
+        print(f"loops: (none under {base})")
+        return 0
+    found = 0
+    for d in sorted(p for p in base.iterdir() if p.is_dir()):
+        sp = d / "loop.yaml"
+        if not sp.is_file():
+            continue
+        found += 1
+        try:
+            st = load_loop(sp)
+            print(f"  {d.name:20} phase={st.phase} goal={st.goal[:60]}")
+        except Exception as e:
+            print(f"  {d.name:20} (unreadable: {e})")
+    if not found:
+        print(f"loops: (none under {base})")
     return 0
 
 
@@ -566,6 +614,9 @@ def build_parser() -> argparse.ArgumentParser:
     ci.add_argument("--number", type=int, default=None)
     ci.add_argument("--kind", choices=("issue", "pr"), default="issue")
     ci.set_defaults(func=_cmd_council_init)
+    cl = cs.add_parser("list", help="List council workspaces")
+    cl.add_argument("--root", default=".")
+    cl.set_defaults(func=_cmd_council_list)
     for cmd, fn in (
         ("status", _cmd_council_status),
         ("next", _cmd_council_next),
@@ -591,6 +642,9 @@ def build_parser() -> argparse.ArgumentParser:
     li.add_argument("--goal", required=True)
     li.add_argument("--root", default=".")
     li.set_defaults(func=_cmd_loop_init)
+    ll = lps.add_parser("list", help="List loops under root/loops/")
+    ll.add_argument("--root", default=".")
+    ll.set_defaults(func=_cmd_loop_list)
     ls2 = lps.add_parser("status")
     ls2.add_argument("name")
     ls2.add_argument("--root", default=".")
