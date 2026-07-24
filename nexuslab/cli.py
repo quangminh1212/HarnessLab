@@ -465,6 +465,13 @@ def _cmd_score(args: argparse.Namespace) -> int:
     return 0 if r.score >= 50 else 2
 
 
+def _cmd_sources(_a: argparse.Namespace) -> int:
+    from nexuslab.sources import check_catalog, format_catalog
+
+    print(format_catalog())
+    return 0 if not check_catalog() else 1
+
+
 def _cmd_smoke(_a: argparse.Namespace) -> int:
     import tempfile
 
@@ -513,11 +520,25 @@ def _cmd_smoke(_a: argparse.Namespace) -> int:
         st3, _ = init_council(td_path, "h", "goal", profile="harness", max_rounds=1)
         assert any(r["id"] == "observer" for r in st3.roles)
         print("  [OK] council profile harness")
+        st4, _ = init_council(td_path, "ce", "eval answer quality", profile="chateval", max_rounds=1)
+        assert any(r["id"] == "moderator" for r in st4.roles)
+        print("  [OK] council profile chateval (ChatEval)")
+        st5, _ = init_council(td_path, "sw", "fix issue #1", profile="swe", max_rounds=1)
+        assert any(r["id"] == "locator" for r in st5.roles)
+        print("  [OK] council profile swe (SWE-Debate)")
         init_loop(td_path, "L1", "do thing")
         print("  [OK] OPAV loop init")
         scaffold_project(td_path / "proj")
         sc = score_project(td_path / "proj")
         print(f"  [OK] score {sc.score}")
+    from nexuslab.sources import check_catalog
+
+    cat_probs = check_catalog()
+    if cat_probs:
+        print(f"  [FAIL] sources catalog: {cat_probs}")
+        failed += 1
+    else:
+        print("  [OK] sources catalog")
     print(f"smoke: failed={failed}")
     return 0 if failed == 0 else 1
 
@@ -683,6 +704,9 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("init-pipeline", help="Scaffold .harness/pipelines")
     s.add_argument("path")
     s.set_defaults(func=_cmd_init_pipeline)
+
+    s = sub.add_parser("sources", help="List equivalent GitHub projects + integration check")
+    s.set_defaults(func=_cmd_sources)
 
     s = sub.add_parser("smoke", help="Full self-check including 3 vendored labs")
     s.set_defaults(func=_cmd_smoke)

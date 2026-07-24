@@ -72,6 +72,28 @@ def test_loop_list(tmp_path: Path):
     assert "l1" in p2.stdout
 
 
+def test_sources_and_new_profiles(tmp_path: Path):
+    p = run("sources")
+    assert p.returncode == 0, p.stdout + p.stderr
+    assert "check: PASS" in p.stdout
+    assert "chateval" in p.stdout
+    for profile in ("chateval", "swe"):
+        r = run(
+            "council",
+            "init",
+            f"p-{profile}",
+            "--topic",
+            "t",
+            "--profile",
+            profile,
+            "--root",
+            str(tmp_path),
+            "--rounds",
+            "1",
+        )
+        assert r.returncode == 0, r.stdout + r.stderr
+
+
 def test_init_pipeline(tmp_path: Path):
     p = run("init-pipeline", str(tmp_path))
     assert p.returncode == 0, p.stdout + p.stderr

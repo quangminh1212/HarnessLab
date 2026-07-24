@@ -1,0 +1,57 @@
+schema_version: "1"
+lab: nexuslab
+entries:
+  - id: multi-agents-debate
+    url: https://github.com/Skytliang/Multi-Agents-Debate
+    license: GPL-3.0
+    status: integrated
+    role: MAD pillar + council profile mad
+    evidence:
+      - labs/Multi-Agents-Debate/code/utils/agent.py
+      - nexuslab/profiles.py
+  - id: awesome-harness-engineering
+    url: https://github.com/ai-boost/awesome-harness-engineering
+    license: CC0-1.0
+    status: integrated
+    role: AHE templates + harness council profile
+    evidence:
+      - labs/awesome-harness-engineering/templates/PLAN.md
+  - id: loop-engineering
+    url: https://github.com/cobusgreyling/loop-engineering
+    license: MIT
+    status: integrated
+    role: GitHub multi-agent patterns + tools
+    evidence:
+      - labs/loop-engineering/patterns/pr-babysitter.md
+  - id: chateval
+    url: https://github.com/thunlp/ChatEval
+    license: MIT
+    status: integrated
+    role: Multi-agent evaluator personas → council profile chateval
+    evidence:
+      - nexuslab/profiles.py
+  - id: swe-debate
+    url: https://github.com/YerbaPage/SWE-Debate
+    license: upstream
+    status: integrated
+    role: Software issue debate → council profile swe
+    evidence:
+      - nexuslab/profiles.py
+  - id: picrew-awesome-agent-harness
+    url: https://github.com/Picrew/awesome-agent-harness
+    license: upstream
+    status: referenced
+    role: Secondary awesome list (311 GitHub projects)
+    evidence: []
+  - id: rucaibox-awesome-agent-harness
+    url: https://github.com/RUCAIBox/awesome-agent-harness
+    license: upstream
+    status: referenced
+    role: Survey list of debate-based harness methods
+    evidence: []
+  - id: multi-agent-debate-mcp
+    url: https://github.com/albinjal/multi-agent-debate-mcp
+    license: upstream
+    status: referenced
+    role: MCP server for agent debates
+    evidence: []

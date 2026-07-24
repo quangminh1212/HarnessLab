@@ -118,6 +118,78 @@ PROFILES: dict[str, dict[str, Any]] = {
             },
         ],
     },
+    "chateval": {
+        "title": "ChatEval multi-agent evaluation",
+        "source": "https://github.com/thunlp/ChatEval",
+        "description": (
+            "Diverse evaluator personas debate quality of an answer/artifact "
+            "(ChatEval: multi-agent debate for better LLM evaluators)."
+        ),
+        "max_rounds_default": 2,
+        "turn_format": "SCORE: 1-10 | CLAIM: … | EVIDENCE: … | ASK: …",
+        "roles": [
+            {
+                "id": "generalist",
+                "title": "Generalist",
+                "stance": "affirmative",
+                "brief": "Holistic evaluation: correctness, completeness, clarity.",
+            },
+            {
+                "id": "critic",
+                "title": "Critic",
+                "stance": "negative",
+                "brief": "Stress flaws, hallucinations, missing edge cases, weak evidence.",
+            },
+            {
+                "id": "domain",
+                "title": "Domain Specialist",
+                "stance": "specialist",
+                "brief": "Judge domain-specific accuracy and terminology.",
+            },
+            {
+                "id": "moderator",
+                "title": "Moderator",
+                "stance": "judge",
+                "brief": "Synthesize scores; WINNER or FINAL_SCORE; residual risks.",
+            },
+        ],
+    },
+    "swe": {
+        "title": "SWE-Debate issue resolution",
+        "source": "https://github.com/YerbaPage/SWE-Debate",
+        "description": (
+            "Competitive multi-agent debate for software issue resolution "
+            "(locate → propose → challenge → moderate)."
+        ),
+        "max_rounds_default": 3,
+        "turn_format": "LOC: path:line | CLAIM: … | PATCH_IDEA: … | RISK: … | ASK: …",
+        "roles": [
+            {
+                "id": "locator",
+                "title": "Locator",
+                "stance": "locate",
+                "brief": "Pinpoint files/lines and root-cause hypotheses from issue context.",
+            },
+            {
+                "id": "proposer",
+                "title": "Proposer",
+                "stance": "affirmative",
+                "brief": "Propose concrete fix strategy with tests; cite LOC evidence.",
+            },
+            {
+                "id": "challenger",
+                "title": "Challenger",
+                "stance": "negative",
+                "brief": "Attack weak patches: regressions, missing tests, wrong root cause.",
+            },
+            {
+                "id": "moderator",
+                "title": "Moderator",
+                "stance": "judge",
+                "brief": "Pick best path; write DECISION with acceptance tests and residual risk.",
+            },
+        ],
+    },
 }
 
 
