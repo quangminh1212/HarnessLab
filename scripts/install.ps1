@@ -2,7 +2,7 @@
 <#
 .SYNOPSIS
   Attach NexusLab to local Hermes Agent (junctions only).
-  SoT stays in C:\Dev\NexusLab — no hermes-agent source edits.
+  SoT stays in C:\Dev\NexusLab - no hermes-agent source edits.
 #>
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
@@ -15,7 +15,7 @@ Write-Host "Repo:   $Root"
 Write-Host "Hermes: $Hermes"
 
 if (-not (Test-Path $Hermes)) {
-  throw "Hermes home not found: $Hermes — install Hermes Agent first."
+  throw "Hermes home not found: $Hermes - install Hermes Agent first."
 }
 if (-not (Test-Path $SkillsSrc)) {
   throw "skills/ missing under $Root"
@@ -59,6 +59,24 @@ $ctxDst = Join-Path $Hermes 'nexuslab-HERMES.md'
 if (Test-Path $ctxSrc) {
   Copy-Item $ctxSrc $ctxDst -Force
   Write-Host "Wrote $ctxDst"
+}
+
+# Best-effort: editable CLI into Hermes agent venv (terminal tool can run python -m nexuslab)
+$HermesPyCandidates = @(
+  (Join-Path $Hermes 'hermes-agent\venv\Scripts\python.exe'),
+  (Join-Path $Hermes 'hermes-agent\.venv\Scripts\python.exe')
+)
+foreach ($py in $HermesPyCandidates) {
+  if (Test-Path $py) {
+    Write-Host "Installing nexuslab CLI into Hermes venv: $py"
+    & $py -m pip install -e $Root -q
+    if ($LASTEXITCODE -ne 0) {
+      Write-Warning "pip install into Hermes venv failed (skills still attached)"
+    } else {
+      Write-Host "CLI OK: $py -m nexuslab"
+    }
+    break
+  }
 }
 
 Write-Host ""
