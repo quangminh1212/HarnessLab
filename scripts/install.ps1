@@ -54,6 +54,46 @@ Get-ChildItem $SkillsSrc -Directory | ForEach-Object {
   Ensure-Junction $dst $_.FullName
 }
 
+# Thin /harnesslab alias — NEVER junction to nexuslab (duplicate frontmatter name: nexuslab breaks skill_view)
+$hlDst = Join-Path $SkillsDstRoot 'harnesslab'
+$hlSkill = Join-Path $hlDst 'SKILL.md'
+$hlBody = @'
+---
+name: harnesslab
+description: >
+  Alias of NexusLab multi-AI harness/council. Prefer skill_view("nexuslab") or /nexuslab.
+  Same CLI: python -m nexuslab smoke|doctor|council|...
+compatibility: terminal; gh recommended
+metadata:
+  hermes:
+    tags: [alias, nexuslab, harness]
+    category: development
+    requires_toolsets: [terminal]
+---
+
+# harnesslab (alias)
+
+**Canonical skill:** `nexuslab` → SoT NexusLab `skills/nexuslab`
+
+```powershell
+python -m nexuslab smoke
+python -m nexuslab doctor
+```
+
+Load **nexuslab** for the full workflow.
+'@
+if (Test-Path $hlDst) {
+  $item = Get-Item $hlDst -Force
+  $isLink = [bool]($item.Attributes -band [IO.FileAttributes]::ReparsePoint)
+  if ($isLink) {
+    Write-Host "Replacing harnesslab junction with thin alias skill"
+    cmd /c "rmdir `"$hlDst`"" | Out-Null
+  }
+}
+New-Item -ItemType Directory -Force -Path $hlDst | Out-Null
+Set-Content -Path $hlSkill -Value $hlBody -Encoding UTF8
+Write-Host "Wrote thin alias: $hlSkill"
+
 $ctxSrc = Join-Path $Root 'templates\HERMES.md'
 $ctxDst = Join-Path $Hermes 'nexuslab-HERMES.md'
 if (Test-Path $ctxSrc) {
