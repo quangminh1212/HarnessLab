@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from harnesslab.council import init_council
-from harnesslab.vendors import (
+from nexuslab.council import init_council
+from nexuslab.vendors import (
     copy_ahe_templates,
     format_status,
     list_loop_patterns,
@@ -27,7 +27,7 @@ def test_mad_config_and_code():
     assert "2+2=?" in prompts["player_meta_prompt"]
     files = mad_code_files()
     assert any(p.name == "agent.py" for p in files)
-    from harnesslab.vendors import mad_root
+    from nexuslab.vendors import mad_root
 
     assert (mad_root() / "interactive.py").is_file()
 

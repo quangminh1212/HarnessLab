@@ -1,8 +1,8 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Attach HarnessLab to local Hermes Agent (junctions only).
-  SoT stays in C:\Dev\HarnessLab — no hermes-agent source edits.
+  Attach NexusLab to local Hermes Agent (junctions only).
+  SoT stays in C:\Dev\NexusLab — no hermes-agent source edits.
 #>
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
@@ -10,7 +10,7 @@ $Hermes = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCAL
 $SkillsSrc = Join-Path $Root 'skills'
 $SkillsDstRoot = Join-Path $Hermes 'skills'
 
-Write-Host "== HarnessLab attach ==" -ForegroundColor Cyan
+Write-Host "== NexusLab attach ==" -ForegroundColor Cyan
 Write-Host "Repo:   $Root"
 Write-Host "Hermes: $Hermes"
 
@@ -55,15 +55,15 @@ Get-ChildItem $SkillsSrc -Directory | ForEach-Object {
 }
 
 $ctxSrc = Join-Path $Root 'templates\HERMES.md'
-$ctxDst = Join-Path $Hermes 'harnesslab-HERMES.md'
+$ctxDst = Join-Path $Hermes 'nexuslab-HERMES.md'
 if (Test-Path $ctxSrc) {
   Copy-Item $ctxSrc $ctxDst -Force
   Write-Host "Wrote $ctxDst"
 }
 
 Write-Host ""
-Write-Host "OK. HarnessLab attached (junction only)." -ForegroundColor Green
-Write-Host "In Hermes chat: /harnesslab  (multi-AI GitHub council)"
+Write-Host "OK. NexusLab attached (junction only)." -ForegroundColor Green
+Write-Host "In Hermes chat: /nexuslab  (multi-AI GitHub council)"
 Write-Host "Detach: powershell -File $Root\scripts\uninstall.ps1"
-Write-Host "CLI:    cd $Root; python -m pip install -e .; python -m harnesslab smoke"
-Write-Host "Council: python -m harnesslab council init demo --ref owner/repo#1 --topic '...'"
+Write-Host "CLI:    cd $Root; python -m pip install -e .; python -m nexuslab smoke"
+Write-Host "Council: python -m nexuslab council init demo --ref owner/repo#1 --topic '...'"

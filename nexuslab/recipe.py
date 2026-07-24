@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from harnesslab.doctor import default_clone_path
+from nexuslab.doctor import default_clone_path
 
 RECIPES = ("docker-run", "clone", "stop")
 
@@ -19,7 +19,7 @@ def render_recipe(name: str, *, data_dir: str | None = None) -> str:
     data = data_dir or str(Path(os_temp()) / "harness")
 
     if key == "docker-run":
-        return f"""# HarnessLab recipe: docker-run
+        return f"""# NexusLab recipe: docker-run
 # Requires Docker Desktop. UI: http://localhost:3000
 
 docker run -d -p 3000:3000 -p 3022:3022 \\
@@ -31,14 +31,14 @@ docker run -d -p 3000:3000 -p 3022:3022 \\
 # Stop:  docker stop harness && docker rm harness
 """
     if key == "clone":
-        return f"""# HarnessLab recipe: clone
+        return f"""# NexusLab recipe: clone
 # Optional source checkout (large Go monorepo).
 
 git clone https://github.com/harness/harness.git "{clone}"
 cd "{clone}"
 """
     if key == "stop":
-        return """# HarnessLab recipe: stop
+        return """# NexusLab recipe: stop
 docker stop harness
 docker rm harness
 """

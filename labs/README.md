@@ -1,6 +1,6 @@
 # Vendored labs (git submodules)
 
-HarnessLab **gộp 3 repo upstream** dưới `labs/`:
+NexusLab **gộp 3 repo upstream** dưới `labs/`:
 
 | Key | Path | Upstream | Pillar | License |
 |-----|------|----------|--------|---------|
@@ -11,31 +11,31 @@ HarnessLab **gộp 3 repo upstream** dưới `labs/`:
 ## Init after clone
 
 ```powershell
-cd C:\Dev\HarnessLab
+cd C:\Dev\NexusLab
 git submodule update --init --recursive
-python -m harnesslab vendors
-python -m harnesslab smoke
+python -m nexuslab vendors
+python -m nexuslab smoke
 ```
 
 ## CLI bridges
 
 ```powershell
 # MAD
-python -m harnesslab mad status
-python -m harnesslab mad init demo --topic "Is average speed 1.5 m/s?"
+python -m nexuslab mad status
+python -m nexuslab mad init demo --topic "Is average speed 1.5 m/s?"
 
 # awesome-harness-engineering
-python -m harnesslab ahe templates templates/ahe
+python -m nexuslab ahe templates templates/ahe
 
 # loop-engineering (GitHub multi-agent patterns)
-python -m harnesslab loop-eng list
-python -m harnesslab loop-eng copy pr-babysitter --dest patterns/pr-babysitter.md
+python -m nexuslab loop-eng list
+python -m nexuslab loop-eng copy pr-babysitter --dest patterns/pr-babysitter.md
 # optional node tools (after npm run build:tools in labs/loop-engineering):
-# python -m harnesslab loop-eng run loop-init -- --help
+# python -m nexuslab loop-eng run loop-init -- --help
 ```
 
 ## License note
 
 - MAD is **GPL-3.0** — kept as submodule; do not relicense MAD code as MIT.
 - AHE is CC0; loop-engineering is MIT.
-- HarnessLab original code remains MIT; combining distributions must respect GPL for MAD component.
+- NexusLab original code remains MIT; combining distributions must respect GPL for MAD component.

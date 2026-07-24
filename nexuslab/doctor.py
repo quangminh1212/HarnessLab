@@ -79,5 +79,5 @@ def run_doctor() -> DoctorReport:
     else:
         lines.append(f"- harness OSS clone optional: {clone}")
 
-    lines.append("- primary mode: multi-AI council on GitHub (harnesslab council …)")
+    lines.append("- primary mode: multi-AI council on GitHub (NexusLab council …)")
     return DoctorReport(ok=ok, lines=lines)

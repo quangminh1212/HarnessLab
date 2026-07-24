@@ -142,7 +142,7 @@ python interactive.py
 # sh debate4tran.sh
 
 # Prefer offline durable council (no OpenAI dependency):
-harnesslab council init my-mad --profile mad --topic "Your question"
+NexusLab council init my-mad --profile mad --topic "Your question"
 """
 
 

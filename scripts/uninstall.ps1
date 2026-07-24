@@ -5,7 +5,7 @@ $Hermes = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCAL
 $SkillsSrc = Join-Path $Root 'skills'
 $SkillsDstRoot = Join-Path $Hermes 'skills'
 
-Write-Host "== HarnessLab detach ==" -ForegroundColor Cyan
+Write-Host "== NexusLab detach ==" -ForegroundColor Cyan
 
 Get-ChildItem $SkillsSrc -Directory -ErrorAction SilentlyContinue | ForEach-Object {
   $dst = Join-Path $SkillsDstRoot $_.Name
@@ -21,10 +21,10 @@ Get-ChildItem $SkillsSrc -Directory -ErrorAction SilentlyContinue | ForEach-Obje
   }
 }
 
-$note = Join-Path $Hermes 'harnesslab-HERMES.md'
+$note = Join-Path $Hermes 'nexuslab-HERMES.md'
 if (Test-Path $note) {
   Remove-Item $note -Force
   Write-Host "Removed $note"
 }
 
-Write-Host "OK. HarnessLab detached." -ForegroundColor Green
+Write-Host "OK. NexusLab detached." -ForegroundColor Green

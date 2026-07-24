@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/quangminh1212/HarnessLab/schemas/handoff.schema.json",
-  "title": "HarnessLab multi-agent handoff",
+  "$id": "https://github.com/quangminh1212/NexusLab/schemas/handoff.schema.json",
+  "title": "NexusLab multi-agent handoff",
   "type": "object",
   "required": ["from_role", "to_role", "intent", "payload", "acceptance"],
   "properties": {

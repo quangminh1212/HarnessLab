@@ -1,4 +1,4 @@
-# Example Harness-style pipeline scaffold (HarnessLab)
+# Example Harness-style pipeline scaffold (NexusLab)
 pipeline:
   name: xlab-smoke
   stages:

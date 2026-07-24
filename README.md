@@ -1,4 +1,4 @@
-# HarnessLab
+# NexusLab
 
 **Gộp 3 repo** thành lab Hermes-native cho multi-AI / agent harness / GitHub:
 
@@ -9,11 +9,11 @@
 | **GitHub multi-agent loops** | [`labs/loop-engineering`](https://github.com/cobusgreyling/loop-engineering) | `loop-eng list/copy/run`, `github pull`, `handoff`, `council --profile github` |
 
 ```text
-git clone --recurse-submodules https://github.com/quangminh1212/HarnessLab
-cd HarnessLab
+git clone --recurse-submodules https://github.com/quangminh1212/NexusLab
+cd NexusLab
 python -m pip install -e ".[dev]"
-python -m harnesslab smoke
-python -m harnesslab vendors
+python -m nexuslab smoke
+python -m nexuslab vendors
 ```
 
 ## Quick flows
@@ -21,44 +21,44 @@ python -m harnesslab vendors
 ### 1) MAD debate (upstream code + durable council)
 
 ```powershell
-python -m harnesslab mad status          # lists labs/Multi-Agents-Debate/code/*.py
-python -m harnesslab mad init qa1 --topic "Alice uphill 1m/s downhill 3m/s average?"
-python -m harnesslab council next qa1
+python -m nexuslab mad status          # lists labs/Multi-Agents-Debate/code/*.py
+python -m nexuslab mad init qa1 --topic "Alice uphill 1m/s downhill 3m/s average?"
+python -m nexuslab council next qa1
 # Optional live OpenAI engine: python labs/Multi-Agents-Debate/interactive.py
 ```
 
 ### 2) Agent harness scaffold (AHE templates)
 
 ```powershell
-python -m harnesslab ahe templates templates/ahe
-python -m harnesslab scaffold my-proj
-python -m harnesslab loop init work1 --goal "Ship feature X" --root my-proj
-python -m harnesslab score my-proj
+python -m nexuslab ahe templates templates/ahe
+python -m nexuslab scaffold my-proj
+python -m nexuslab loop init work1 --goal "Ship feature X" --root my-proj
+python -m nexuslab score my-proj
 ```
 
 ### 3) GitHub multi-agent (loop-engineering patterns + handoffs)
 
 ```powershell
-python -m harnesslab loop-eng list
-python -m harnesslab loop-eng copy pr-babysitter
-python -m harnesslab github pull --repo cli/cli --number 1
-python -m harnesslab council init rev --profile github --repo cli/cli --number 1 --kind pr
-python -m harnesslab handoff example --out handoffs/review.yaml
-python -m harnesslab handoff validate handoffs/review.yaml
+python -m nexuslab loop-eng list
+python -m nexuslab loop-eng copy pr-babysitter
+python -m nexuslab github pull --repo cli/cli --number 1
+python -m nexuslab council init rev --profile github --repo cli/cli --number 1 --kind pr
+python -m nexuslab handoff example --out handoffs/review.yaml
+python -m nexuslab handoff validate handoffs/review.yaml
 ```
 
 ## Hermes
 
 ```powershell
-python -m harnesslab attach
-# chat: /harnesslab
+python -m nexuslab attach
+# chat: /nexuslab
 ```
 
 ## Layout
 
 ```text
-HarnessLab/
-  harnesslab/          # unified CLI package
+NexusLab/
+  nexuslab/            # unified CLI package
   labs/                # 3 git submodules (full upstream trees)
     Multi-Agents-Debate/
     awesome-harness-engineering/
@@ -72,7 +72,7 @@ See [labs/README.md](labs/README.md) and [SOURCES.md](SOURCES.md).
 
 ## License
 
-- **HarnessLab** original code: MIT
+- **NexusLab** original code: MIT
 - **Multi-Agents-Debate**: GPL-3.0 (submodule — keep separate license)
 - **awesome-harness-engineering**: CC0
 - **loop-engineering**: MIT

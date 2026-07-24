@@ -7,7 +7,7 @@ from pathlib import Path
 FILES: dict[str, str] = {
     "HARNESS.md": """# HARNESS.md
 
-This repo is agent-ready. HarnessLab unifies:
+This repo is agent-ready. NexusLab unifies:
 
 1. **Agent harness engineering** — loop, context, plan, verify, state
 2. **MAD multi-agent debate** — devil / angel / judge
@@ -16,11 +16,11 @@ This repo is agent-ready. HarnessLab unifies:
 ## Commands
 
 ```text
-harnesslab score .
-harnesslab loop init <name> --goal "..."
-harnesslab council init <name> --profile mad|github|harness --ref owner/repo#n
-harnesslab handoff validate path/to/handoff.yaml
-harnesslab github pull --ref owner/repo#n
+NexusLab score .
+NexusLab loop init <name> --goal "..."
+NexusLab council init <name> --profile mad|github|harness --ref owner/repo#n
+NexusLab handoff validate path/to/handoff.yaml
+NexusLab github pull --ref owner/repo#n
 ```
 
 ## Rules
@@ -31,7 +31,7 @@ harnesslab github pull --ref owner/repo#n
 """,
     "AGENTS.md": """# AGENTS.md
 
-## Roles available via HarnessLab
+## Roles available via NexusLab
 
 ### Profile `mad`
 - devil (affirmative), angel (negative), judge

@@ -180,7 +180,7 @@ def init_council(
     profile: str = "github",
     mad_prompts: dict[str, str] | None = None,
 ) -> tuple[CouncilState, list[Path]]:
-    from harnesslab.profiles import get_profile, roles_for
+    from nexuslab.profiles import get_profile, roles_for
 
     prof = get_profile(profile)
     roles = roles_for(profile)
@@ -231,7 +231,7 @@ def init_council(
 - title: {gh.get("title", "(none)")}
 
 ## Body
-{gh.get("body") or "(no body pulled — run harnesslab github pull)"}
+{gh.get("body") or "(no body pulled — run NexusLab github pull)"}
 {mad_block}
 ## Roles
 """
@@ -312,7 +312,7 @@ URL: {gh.get('url', '')}
 - End with structured tags for this profile (see CONTEXT.md turn_format).
 
 When done, record via:
-  harnesslab council turn {state.name} --role {role['id']} --file turn.md
+  NexusLab council turn {state.name} --role {role['id']} --file turn.md
 """
 
 
