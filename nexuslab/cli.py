@@ -48,6 +48,17 @@ from nexuslab.vendors import (
 )
 
 
+def _ensure_utf8_stdio() -> None:
+    """Avoid UnicodeEncodeError on Windows consoles using cp1252."""
+    for stream in (sys.stdout, sys.stderr):
+        reconf = getattr(stream, "reconfigure", None)
+        if callable(reconf):
+            try:
+                reconf(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
+
 def _cmd_attach(args: argparse.Namespace) -> int:
     home = Path(args.hermes_home) if args.hermes_home else default_hermes_home()
     try:
@@ -715,6 +726,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _ensure_utf8_stdio()
     parser = build_parser()
     args = parser.parse_args(argv)
     return int(args.func(args))
