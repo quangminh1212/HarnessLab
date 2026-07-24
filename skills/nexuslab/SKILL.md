@@ -5,7 +5,7 @@ description: >
   awesome-harness-engineering (AHE templates/loop), loop-engineering
   (GitHub multi-agent patterns). Council profiles mad|github|harness.
   Activate with /nexuslab.
-compatibility: terminal; gh recommended; submodules under labs/
+compatibility: terminal; gh recommended; vendored labs under labs/
 metadata:
   author: NexusLab
   version: "0.3.0"
@@ -17,7 +17,7 @@ metadata:
 
 # NexusLab — 3 labs in one
 
-SoT: `C:\Dev\NexusLab` with **git submodules**:
+SoT: `C:\Dev\NexusLab` with **vendored trees** under `labs/` (not git submodules):
 
 | Pillar | Path |
 |--------|------|
@@ -26,7 +26,6 @@ SoT: `C:\Dev\NexusLab` with **git submodules**:
 | GitHub multi-agent loops | `labs/loop-engineering` (MIT) |
 
 ```powershell
-git submodule update --init --recursive
 python -m nexuslab vendors
 python -m nexuslab smoke
 ```

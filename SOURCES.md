@@ -1,7 +1,7 @@
-# Sources — three upstream labs (full trees as submodules)
+# Sources — three upstream labs (vendored trees under labs/)
 
-| Submodule | Repo | Role in NexusLab |
-|-----------|------|--------------------|
+| Path | Repo | Role in NexusLab |
+|------|------|--------------------|
 | `labs/Multi-Agents-Debate` | https://github.com/Skytliang/Multi-Agents-Debate | MAD engine + prompts (`code/`, `interactive.py`) |
 | `labs/awesome-harness-engineering` | https://github.com/ai-boost/awesome-harness-engineering | Harness templates + curated list |
 | `labs/loop-engineering` | https://github.com/cobusgreyling/loop-engineering | GitHub multi-agent loop patterns + node tools |

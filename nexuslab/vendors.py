@@ -1,4 +1,4 @@
-"""Bridges to the three vendored upstream labs (git submodules under labs/).
+"""Bridges to the three vendored upstream labs (plain trees under labs/, not git submodules).
 
 | Lab | Upstream | Pillar |
 |-----|----------|--------|
@@ -84,7 +84,7 @@ def status_all() -> list[VendorStatus]:
 
 
 def format_status() -> str:
-    lines = ["vendored labs (submodules under labs/):"]
+    lines = ["vendored labs (trees under labs/):"]
     for s in status_all():
         mark = "OK" if s.present else "MISSING"
         lines.append(f"  [{mark}] {s.key:5} {s.pillar}")
@@ -93,7 +93,7 @@ def format_status() -> str:
     missing = [s for s in status_all() if not s.present]
     if missing:
         lines.append("")
-        lines.append("Fix: git submodule update --init --recursive")
+        lines.append("Fix: restore labs/ from repo (vendored trees, not submodules)")
     return "\n".join(lines)
 
 
@@ -107,7 +107,7 @@ def mad_root() -> Path:
 def load_mad_config() -> dict[str, Any]:
     cfg = mad_root() / "code" / "utils" / "config4all.json"
     if not cfg.is_file():
-        raise FileNotFoundError(f"MAD config missing: {cfg} — init submodule")
+        raise FileNotFoundError(f"MAD config missing: {cfg} — restore labs/Multi-Agents-Debate")
     return json.loads(cfg.read_text(encoding="utf-8"))
 
 

@@ -1,6 +1,6 @@
-# Vendored labs (git submodules)
+# Vendored labs (plain trees)
 
-NexusLab **gộp 3 repo upstream** dưới `labs/`:
+NexusLab **gộp 3 repo upstream** dưới `labs/` (tracked in-repo, **not** git submodules):
 
 | Key | Path | Upstream | Pillar | License |
 |-----|------|----------|--------|---------|
@@ -8,11 +8,11 @@ NexusLab **gộp 3 repo upstream** dưới `labs/`:
 | **ahe** | `labs/awesome-harness-engineering` | [ai-boost/awesome-harness-engineering](https://github.com/ai-boost/awesome-harness-engineering) | Agent harness engineering templates/list | **CC0** |
 | **loop** | `labs/loop-engineering` | [cobusgreyling/loop-engineering](https://github.com/cobusgreyling/loop-engineering) | GitHub multi-agent loops, patterns, tools | **MIT** |
 
-## Init after clone
+## After clone
 
 ```powershell
 cd C:\Dev\NexusLab
-git submodule update --init --recursive
+python -m pip install -e ".[dev]"
 python -m nexuslab vendors
 python -m nexuslab smoke
 ```
@@ -36,6 +36,6 @@ python -m nexuslab loop-eng copy pr-babysitter --dest patterns/pr-babysitter.md
 
 ## License note
 
-- MAD is **GPL-3.0** — kept as submodule; do not relicense MAD code as MIT.
+- MAD is **GPL-3.0** — vendored tree keeps upstream license; do not relicense MAD code as MIT.
 - AHE is CC0; loop-engineering is MIT.
 - NexusLab original code remains MIT; combining distributions must respect GPL for MAD component.

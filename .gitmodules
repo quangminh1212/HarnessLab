@@ -1,9 +1,0 @@
-[submodule "labs/Multi-Agents-Debate"]
-	path = labs/Multi-Agents-Debate
-	url = https://github.com/Skytliang/Multi-Agents-Debate.git
-[submodule "labs/awesome-harness-engineering"]
-	path = labs/awesome-harness-engineering
-	url = https://github.com/ai-boost/awesome-harness-engineering.git
-[submodule "labs/loop-engineering"]
-	path = labs/loop-engineering
-	url = https://github.com/cobusgreyling/loop-engineering.git

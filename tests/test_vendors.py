@@ -16,7 +16,7 @@ def test_all_vendors_present():
     st = status_all()
     assert len(st) == 3
     missing = [s.key for s in st if not s.present]
-    assert not missing, f"missing submodules: {missing}\n{format_status()}"
+    assert not missing, f"missing vendored labs: {missing}\n{format_status()}"
 
 
 def test_mad_config_and_code():

@@ -479,7 +479,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="nexuslab",
         description=(
             "NexusLab — merge of MAD + awesome-harness-engineering + loop-engineering "
-            "as submodules, with council/loop/handoff CLI for Hermes"
+            "as vendored labs/, with council/loop/handoff CLI for Hermes"
         ),
     )
     p.add_argument("--version", action="version", version=f"nexuslab {__version__}")
@@ -503,7 +503,7 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("doctor", help="Env + vendored labs status")
     s.set_defaults(func=_cmd_doctor)
 
-    s = sub.add_parser("vendors", help="Show 3 submodule labs status")
+    s = sub.add_parser("vendors", help="Show 3 vendored labs status")
     s.set_defaults(func=_cmd_vendors)
 
     # MAD upstream
@@ -630,7 +630,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("path")
     s.set_defaults(func=_cmd_init_pipeline)
 
-    s = sub.add_parser("smoke", help="Full self-check including 3 submodules")
+    s = sub.add_parser("smoke", help="Full self-check including 3 vendored labs")
     s.set_defaults(func=_cmd_smoke)
 
     return p

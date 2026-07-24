@@ -2,14 +2,14 @@
 
 **Gộp 3 repo** thành lab Hermes-native cho multi-AI / agent harness / GitHub:
 
-| Pillar | Upstream (submodule) | CLI |
-|--------|----------------------|-----|
+| Pillar | Upstream (vendored under `labs/`) | CLI |
+|--------|-----------------------------------|-----|
 | **Agent harness engineering** | [`labs/awesome-harness-engineering`](https://github.com/ai-boost/awesome-harness-engineering) | `ahe templates`, `loop`, `scaffold`, `score` |
 | **Multi-agent debate (MAD)** | [`labs/Multi-Agents-Debate`](https://github.com/Skytliang/Multi-Agents-Debate) | `mad status/init`, `council --profile mad` |
 | **GitHub multi-agent loops** | [`labs/loop-engineering`](https://github.com/cobusgreyling/loop-engineering) | `loop-eng list/copy/run`, `github pull`, `handoff`, `council --profile github` |
 
 ```text
-git clone --recurse-submodules https://github.com/quangminh1212/NexusLab
+git clone https://github.com/quangminh1212/NexusLab
 cd NexusLab
 python -m pip install -e ".[dev]"
 python -m nexuslab smoke
@@ -59,7 +59,7 @@ python -m nexuslab attach
 ```text
 NexusLab/
   nexuslab/            # unified CLI package
-  labs/                # 3 git submodules (full upstream trees)
+  labs/                # 3 vendored upstream trees (not git submodules)
     Multi-Agents-Debate/
     awesome-harness-engineering/
     loop-engineering/
@@ -73,6 +73,6 @@ See [labs/README.md](labs/README.md) and [SOURCES.md](SOURCES.md).
 ## License
 
 - **NexusLab** original code: MIT
-- **Multi-Agents-Debate**: GPL-3.0 (submodule — keep separate license)
+- **Multi-Agents-Debate**: GPL-3.0 (vendored — keep separate license)
 - **awesome-harness-engineering**: CC0
 - **loop-engineering**: MIT
