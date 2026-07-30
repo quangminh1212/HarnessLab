@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 EXAMPLE = """# Example Harness-style pipeline (scaffold only — adapt to your runner)
-# NexusLab YAGNI: author real pipelines after local Harness is running.
+# HarnessLab YAGNI: author real pipelines after local Harness is running.
 
 pipeline:
   name: xlab-smoke

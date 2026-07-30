@@ -1,4 +1,4 @@
-"""GitHub equivalent-source catalog for NexusLab."""
+"""GitHub equivalent-source catalog for HarnessLab."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 
-from nexuslab.profiles import list_profiles
+from harnesslab.profiles import list_profiles
 
 
 def repo_root() -> Path:
@@ -66,7 +66,7 @@ def check_catalog(root: Path | None = None) -> list[str]:
 
 
 def format_catalog() -> str:
-    lines = ["NexusLab GitHub equivalent sources:", ""]
+    lines = ["HarnessLab GitHub equivalent sources:", ""]
     for e in load_catalog():
         lines.append(f"  [{e.status:10}] {e.id:32} {e.url}")
         lines.append(f"               {e.role}")

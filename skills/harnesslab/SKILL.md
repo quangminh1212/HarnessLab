@@ -1,13 +1,13 @@
 ---
-name: nexuslab
+name: harnesslab
 description: >
-  NexusLab unifies 3 upstream labs: Multi-Agents-Debate (MAD),
+  HarnessLab unifies 3 upstream labs: Multi-Agents-Debate (MAD),
   awesome-harness-engineering (AHE templates/loop), loop-engineering
   (GitHub multi-agent patterns). Council profiles mad|github|harness.
-  Activate with /nexuslab.
+  Activate with /harnesslab.
 compatibility: terminal; gh recommended; vendored labs under labs/
 metadata:
-  author: NexusLab
+  author: HarnessLab
   version: "0.3.0"
   hermes:
     tags: [multi-agent, debate, harness, github, mad, loop-engineering]
@@ -15,9 +15,9 @@ metadata:
     requires_toolsets: [terminal]
 ---
 
-# NexusLab — 3 labs in one
+# HarnessLab — 3 labs in one
 
-SoT: `C:\Dev\NexusLab` with **vendored trees** under `labs/` (not git submodules):
+SoT: `C:\Dev\HarnessLab` with **vendored trees** under `labs/` (not git submodules):
 
 | Pillar | Path |
 |--------|------|
@@ -26,17 +26,17 @@ SoT: `C:\Dev\NexusLab` with **vendored trees** under `labs/` (not git submodules
 | GitHub multi-agent loops | `labs/loop-engineering` (MIT) |
 
 ```powershell
-python -m nexuslab vendors
-python -m nexuslab smoke
+python -m harnesslab vendors
+python -m harnesslab smoke
 ```
 
 ## When user asks for multi-AI debate
 
 ```powershell
-python -m nexuslab mad init <id> --topic "..."
+python -m harnesslab mad init <id> --topic "..."
 # or: council init <id> --profile mad --topic "..."
-python -m nexuslab council next <id>
-python -m nexuslab council turn <id> --role devil --content "..."
+python -m harnesslab council next <id>
+python -m harnesslab council turn <id> --role devil --content "..."
 ```
 
 Roles MAD: **devil → angel → judge** (upstream Affirmative/Negative/Moderator).
@@ -46,20 +46,20 @@ Optional live OpenAI: `python labs/Multi-Agents-Debate/interactive.py` (needs AP
 ## When user asks for harness scaffold / long loop
 
 ```powershell
-python -m nexuslab ahe templates templates/ahe
-python -m nexuslab scaffold .
-python -m nexuslab loop init <id> --goal "..."
-python -m nexuslab score .
+python -m harnesslab ahe templates templates/ahe
+python -m harnesslab scaffold .
+python -m harnesslab loop init <id> --goal "..."
+python -m harnesslab score .
 ```
 
 ## When user asks for GitHub multi-agent review
 
 ```powershell
-python -m nexuslab loop-eng list
-python -m nexuslab loop-eng copy pr-babysitter
-python -m nexuslab github pull --ref owner/repo#n
-python -m nexuslab council init r1 --profile github --ref owner/repo#n
-python -m nexuslab handoff validate handoffs/x.yaml
+python -m harnesslab loop-eng list
+python -m harnesslab loop-eng copy pr-babysitter
+python -m harnesslab github pull --ref owner/repo#n
+python -m harnesslab council init r1 --profile github --ref owner/repo#n
+python -m harnesslab handoff validate handoffs/x.yaml
 ```
 
 ## Rules

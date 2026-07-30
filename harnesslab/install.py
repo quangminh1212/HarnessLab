@@ -1,4 +1,4 @@
-"""Attach/detach NexusLab to Hermes Agent without modifying hermes-agent source."""
+"""Attach/detach HarnessLab to Hermes Agent without modifying hermes-agent source."""
 
 from __future__ import annotations
 
@@ -9,15 +9,15 @@ import sys
 from pathlib import Path
 
 HERMES_ARTIFACT_RELPATHS: tuple[str, ...] = (
-    "skills/nexuslab",
-    "skills/harnesslab",  # legacy
+    "skills/harnesslab",
+    "skills/nexuslab",  # legacy alias name
     "skills/harness-integration",
-    "nexuslab-HERMES.md",
-    "harnesslab-HERMES.md",  # legacy
+    "harnesslab-HERMES.md",
+    "nexuslab-HERMES.md",  # legacy
 )
 
 # Skill names we may replace even if they were plain directories (stock / legacy).
-REPLACEABLE_SKILL_NAMES = frozenset({"nexuslab", "harnesslab", "harness-integration"})
+REPLACEABLE_SKILL_NAMES = frozenset({"harnesslab", "nexuslab", "harness-integration"})
 
 
 def repo_root() -> Path:
@@ -134,7 +134,7 @@ def attach_to_hermes(hermes_home: Path | None = None) -> list[Path]:
 
     ctx = repo_root() / "templates" / "HERMES.md"
     if ctx.is_file():
-        marker = home / "nexuslab-HERMES.md"
+        marker = home / "harnesslab-HERMES.md"
         shutil.copy2(ctx, marker)
         linked.append(marker)
 

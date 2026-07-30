@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def run(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, "-m", "nexuslab", *args],
+        [sys.executable, "-m", "harnesslab", *args],
         cwd=ROOT,
         capture_output=True,
         text=True,

@@ -1,6 +1,6 @@
 # Sources — equivalent GitHub projects
 
-Machine-readable: [`sources/catalog.yaml`](sources/catalog.yaml) · CLI: `nexuslab sources`
+Machine-readable: [`sources/catalog.yaml`](sources/catalog.yaml) · CLI: `harnesslab sources`
 
 ## Vendored trees (`labs/`)
 

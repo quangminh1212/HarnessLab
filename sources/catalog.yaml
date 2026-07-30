@@ -1,5 +1,5 @@
 schema_version: "1"
-lab: nexuslab
+lab: harnesslab
 entries:
   - id: multi-agents-debate
     url: https://github.com/Skytliang/Multi-Agents-Debate
@@ -8,7 +8,7 @@ entries:
     role: MAD pillar + council profile mad
     evidence:
       - labs/Multi-Agents-Debate/code/utils/agent.py
-      - nexuslab/profiles.py
+      - harnesslab/profiles.py
   - id: awesome-harness-engineering
     url: https://github.com/ai-boost/awesome-harness-engineering
     license: CC0-1.0
@@ -29,14 +29,14 @@ entries:
     status: integrated
     role: Multi-agent evaluator personas → council profile chateval
     evidence:
-      - nexuslab/profiles.py
+      - harnesslab/profiles.py
   - id: swe-debate
     url: https://github.com/YerbaPage/SWE-Debate
     license: upstream
     status: integrated
     role: Software issue debate → council profile swe
     evidence:
-      - nexuslab/profiles.py
+      - harnesslab/profiles.py
   - id: picrew-awesome-agent-harness
     url: https://github.com/Picrew/awesome-agent-harness
     license: upstream

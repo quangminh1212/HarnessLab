@@ -5,7 +5,7 @@ $Hermes = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCAL
 $SkillsSrc = Join-Path $Root 'skills'
 $SkillsDstRoot = Join-Path $Hermes 'skills'
 
-Write-Host "== NexusLab detach ==" -ForegroundColor Cyan
+Write-Host "== HarnessLab detach ==" -ForegroundColor Cyan
 
 Get-ChildItem $SkillsSrc -Directory -ErrorAction SilentlyContinue | ForEach-Object {
   $dst = Join-Path $SkillsDstRoot $_.Name
@@ -21,10 +21,25 @@ Get-ChildItem $SkillsSrc -Directory -ErrorAction SilentlyContinue | ForEach-Obje
   }
 }
 
-$note = Join-Path $Hermes 'nexuslab-HERMES.md'
-if (Test-Path $note) {
-  Remove-Item $note -Force
-  Write-Host "Removed $note"
+foreach ($name in @('harnesslab-HERMES.md', 'nexuslab-HERMES.md')) {
+  $note = Join-Path $Hermes $name
+  if (Test-Path $note) {
+    Remove-Item $note -Force
+    Write-Host "Removed $note"
+  }
 }
 
-Write-Host "OK. NexusLab detached." -ForegroundColor Green
+# Thin alias skill (plain dir, not junction)
+$nxAlias = Join-Path $SkillsDstRoot 'nexuslab'
+if (Test-Path $nxAlias) {
+  $item = Get-Item $nxAlias -Force
+  $isLink = [bool]($item.Attributes -band [IO.FileAttributes]::ReparsePoint)
+  if ($isLink) {
+    cmd /c "rmdir `"$nxAlias`"" | Out-Null
+  } else {
+    Remove-Item -Recurse -Force $nxAlias
+  }
+  Write-Host "Removed alias: $nxAlias"
+}
+
+Write-Host "OK. HarnessLab detached." -ForegroundColor Green

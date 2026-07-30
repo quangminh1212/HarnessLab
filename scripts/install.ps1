@@ -1,8 +1,8 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Attach NexusLab to local Hermes Agent (junctions only).
-  SoT stays in C:\Dev\NexusLab - no hermes-agent source edits.
+  Attach HarnessLab to local Hermes Agent (junctions only).
+  SoT stays in C:\Dev\HarnessLab - no hermes-agent source edits.
 #>
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
@@ -10,7 +10,7 @@ $Hermes = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCAL
 $SkillsSrc = Join-Path $Root 'skills'
 $SkillsDstRoot = Join-Path $Hermes 'skills'
 
-Write-Host "== NexusLab attach ==" -ForegroundColor Cyan
+Write-Host "== HarnessLab attach ==" -ForegroundColor Cyan
 Write-Host "Repo:   $Root"
 Write-Host "Hermes: $Hermes"
 
@@ -54,74 +54,74 @@ Get-ChildItem $SkillsSrc -Directory | ForEach-Object {
   Ensure-Junction $dst $_.FullName
 }
 
-# Thin /harnesslab alias — NEVER junction to nexuslab (duplicate frontmatter name: nexuslab breaks skill_view)
-$hlDst = Join-Path $SkillsDstRoot 'harnesslab'
-$hlSkill = Join-Path $hlDst 'SKILL.md'
-$hlBody = @'
+# Thin /nexuslab alias — NEVER junction to harnesslab (duplicate frontmatter name breaks skill_view)
+$nxDst = Join-Path $SkillsDstRoot 'nexuslab'
+$nxSkill = Join-Path $nxDst 'SKILL.md'
+$nxBody = @'
 ---
-name: harnesslab
+name: nexuslab
 description: >
-  Alias of NexusLab multi-AI harness/council. Prefer skill_view("nexuslab") or /nexuslab.
-  Same CLI: python -m nexuslab smoke|doctor|council|...
+  Alias of HarnessLab multi-AI harness/council. Prefer skill_view("harnesslab") or /harnesslab.
+  Same CLI: python -m harnesslab smoke|doctor|council|...
 compatibility: terminal; gh recommended
 metadata:
   hermes:
-    tags: [alias, nexuslab, harness]
+    tags: [alias, harnesslab, nexuslab, harness]
     category: development
     requires_toolsets: [terminal]
 ---
 
-# harnesslab (alias)
+# nexuslab (alias)
 
-**Canonical skill:** `nexuslab` → SoT NexusLab `skills/nexuslab`
+**Canonical skill:** `harnesslab` → SoT HarnessLab `skills/harnesslab`
 
 ```powershell
-python -m nexuslab smoke
-python -m nexuslab doctor
+python -m harnesslab smoke
+python -m harnesslab doctor
 ```
 
-Load **nexuslab** for the full workflow.
+Load **harnesslab** for the full workflow.
 '@
-if (Test-Path $hlDst) {
-  $item = Get-Item $hlDst -Force
+if (Test-Path $nxDst) {
+  $item = Get-Item $nxDst -Force
   $isLink = [bool]($item.Attributes -band [IO.FileAttributes]::ReparsePoint)
   if ($isLink) {
-    Write-Host "Replacing harnesslab junction with thin alias skill"
-    cmd /c "rmdir `"$hlDst`"" | Out-Null
+    Write-Host "Replacing nexuslab junction with thin alias skill"
+    cmd /c "rmdir `"$nxDst`"" | Out-Null
   }
 }
-New-Item -ItemType Directory -Force -Path $hlDst | Out-Null
-Set-Content -Path $hlSkill -Value $hlBody -Encoding UTF8
-Write-Host "Wrote thin alias: $hlSkill"
+New-Item -ItemType Directory -Force -Path $nxDst | Out-Null
+Set-Content -Path $nxSkill -Value $nxBody -Encoding UTF8
+Write-Host "Wrote thin alias: $nxSkill"
 
 $ctxSrc = Join-Path $Root 'templates\HERMES.md'
-$ctxDst = Join-Path $Hermes 'nexuslab-HERMES.md'
+$ctxDst = Join-Path $Hermes 'harnesslab-HERMES.md'
 if (Test-Path $ctxSrc) {
   Copy-Item $ctxSrc $ctxDst -Force
   Write-Host "Wrote $ctxDst"
 }
 
-# Best-effort: editable CLI into Hermes agent venv (terminal tool can run python -m nexuslab)
+# Best-effort: editable CLI into Hermes agent venv (terminal tool can run python -m harnesslab)
 $HermesPyCandidates = @(
   (Join-Path $Hermes 'hermes-agent\venv\Scripts\python.exe'),
   (Join-Path $Hermes 'hermes-agent\.venv\Scripts\python.exe')
 )
 foreach ($py in $HermesPyCandidates) {
   if (Test-Path $py) {
-    Write-Host "Installing nexuslab CLI into Hermes venv: $py"
+    Write-Host "Installing harnesslab CLI into Hermes venv: $py"
     & $py -m pip install -e $Root -q
     if ($LASTEXITCODE -ne 0) {
       Write-Warning "pip install into Hermes venv failed (skills still attached)"
     } else {
-      Write-Host "CLI OK: $py -m nexuslab"
+      Write-Host "CLI OK: $py -m harnesslab"
     }
     break
   }
 }
 
 Write-Host ""
-Write-Host "OK. NexusLab attached (junction only)." -ForegroundColor Green
-Write-Host "In Hermes chat: /nexuslab  (multi-AI GitHub council)"
+Write-Host "OK. HarnessLab attached (junction only)." -ForegroundColor Green
+Write-Host "In Hermes chat: /harnesslab  (multi-AI GitHub council)"
 Write-Host "Detach: powershell -File $Root\scripts\uninstall.ps1"
-Write-Host "CLI:    cd $Root; python -m pip install -e .; python -m nexuslab smoke"
-Write-Host "Council: python -m nexuslab council init demo --ref owner/repo#1 --topic '...'"
+Write-Host "CLI:    cd $Root; python -m pip install -e .; python -m harnesslab smoke"
+Write-Host "Council: python -m harnesslab council init demo --ref owner/repo#1 --topic '...'"

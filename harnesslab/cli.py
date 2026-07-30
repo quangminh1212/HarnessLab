@@ -1,4 +1,4 @@
-"""NexusLab CLI — unified hub for 3 vendored labs + council/loop/handoff."""
+"""HarnessLab CLI — unified hub for 3 vendored labs + council/loop/handoff."""
 
 from __future__ import annotations
 
@@ -6,8 +6,8 @@ import argparse
 import sys
 from pathlib import Path
 
-from nexuslab import __version__
-from nexuslab.council import (
+from harnesslab import __version__
+from harnesslab.council import (
     append_transcript,
     init_council,
     load_state,
@@ -17,23 +17,23 @@ from nexuslab.council import (
     status_text,
     write_decision_scaffold,
 )
-from nexuslab.doctor import run_doctor
-from nexuslab.github_ctx import pull_context, recipe_comment
-from nexuslab.handoff import (
+from harnesslab.doctor import run_doctor
+from harnesslab.github_ctx import pull_context, recipe_comment
+from harnesslab.handoff import (
     example_handoff,
     load_handoff,
     validate_handoff,
     write_handoff,
     Handoff,
 )
-from nexuslab.install import attach_to_hermes, default_hermes_home, uninstall_from_hermes
-from nexuslab.loop import init_loop, load_loop, loop_dir, save_loop, Phase
-from nexuslab.pipeline import write_pipeline_scaffold
-from nexuslab.profiles import list_profiles
-from nexuslab.recipe import list_recipes, render_recipe
-from nexuslab.scaffold import scaffold_project
-from nexuslab.score import score_project
-from nexuslab.vendors import (
+from harnesslab.install import attach_to_hermes, default_hermes_home, uninstall_from_hermes
+from harnesslab.loop import init_loop, load_loop, loop_dir, save_loop, Phase
+from harnesslab.pipeline import write_pipeline_scaffold
+from harnesslab.profiles import list_profiles
+from harnesslab.recipe import list_recipes, render_recipe
+from harnesslab.scaffold import scaffold_project
+from harnesslab.score import score_project
+from harnesslab.vendors import (
     copy_ahe_templates,
     copy_loop_pattern,
     format_status,
@@ -69,7 +69,7 @@ def _cmd_attach(args: argparse.Namespace) -> int:
     print(f"Hermes home: {home}")
     for p in linked:
         print(f"  + {p}")
-    print("Chat: /nexuslab")
+    print("Chat: /harnesslab")
     return 0
 
 
@@ -108,7 +108,7 @@ def _cmd_init_pipeline(args: argparse.Namespace) -> int:
 
 def _cmd_vendors(_a: argparse.Namespace) -> int:
     print(format_status())
-    return 0 if all(s.present for s in __import__("nexuslab.vendors", fromlist=["status_all"]).status_all()) else 1
+    return 0 if all(s.present for s in __import__("harnesslab.vendors", fromlist=["status_all"]).status_all()) else 1
 
 
 def _cmd_mad_status(_a: argparse.Namespace) -> int:
@@ -477,7 +477,7 @@ def _cmd_score(args: argparse.Namespace) -> int:
 
 
 def _cmd_sources(_a: argparse.Namespace) -> int:
-    from nexuslab.sources import check_catalog, format_catalog
+    from harnesslab.sources import check_catalog, format_catalog
 
     print(format_catalog())
     return 0 if not check_catalog() else 1
@@ -488,7 +488,7 @@ def _cmd_smoke(_a: argparse.Namespace) -> int:
 
     failed = 0
     # vendors
-    from nexuslab.vendors import status_all
+    from harnesslab.vendors import status_all
 
     for s in status_all():
         if s.present:
@@ -542,7 +542,7 @@ def _cmd_smoke(_a: argparse.Namespace) -> int:
         scaffold_project(td_path / "proj")
         sc = score_project(td_path / "proj")
         print(f"  [OK] score {sc.score}")
-    from nexuslab.sources import check_catalog
+    from harnesslab.sources import check_catalog
 
     cat_probs = check_catalog()
     if cat_probs:
@@ -556,13 +556,13 @@ def _cmd_smoke(_a: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="nexuslab",
+        prog="harnesslab",
         description=(
-            "NexusLab — merge of MAD + awesome-harness-engineering + loop-engineering "
+            "HarnessLab — merge of MAD + awesome-harness-engineering + loop-engineering "
             "as vendored labs/, with council/loop/handoff CLI for Hermes"
         ),
     )
-    p.add_argument("--version", action="version", version=f"nexuslab {__version__}")
+    p.add_argument("--version", action="version", version=f"harnesslab {__version__}")
     sub = p.add_subparsers(dest="command", required=True)
 
     def add(name, help_, func, **kwargs):

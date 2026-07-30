@@ -1,13 +1,13 @@
 from pathlib import Path
 
-from nexuslab.council import (
+from harnesslab.council import (
     init_council,
     load_state,
     prompt_for_next,
     save_state,
     state_path,
 )
-from nexuslab.github_ctx import parse_github_ref
+from harnesslab.github_ctx import parse_github_ref
 
 
 def test_parse_github_refs():
