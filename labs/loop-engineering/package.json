@@ -24,5 +24,9 @@
   "devDependencies": {
     "ajv": "^8.17.1",
     "yaml": "^2.8.0"
+  },
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "pnpm": ">=12.0.0"
   }
 }
