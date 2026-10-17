@@ -20,7 +20,8 @@
     "demo": "bash ../../scripts/before-after-demo.sh"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18",
+    "pnpm": ">=12.0.0"
   },
   "keywords": [
     "loop-engineering",
@@ -53,5 +54,6 @@
   },
   "dependencies": {
     "@cobusgreyling/readiness-core": "file:../readiness-core"
-  }
+  },
+  "packageManager": "pnpm@12.11.2"
 }
